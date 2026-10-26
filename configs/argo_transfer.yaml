@@ -1,0 +1,108 @@
+layout:
+  in_len: 14
+  out_len: 14
+  layout: "NTHWC"
+  data_seq_len: 28
+
+optim:
+  total_batch_size: 32
+  micro_batch_size: 8
+  seed: 42
+  method: "adamw"
+  lr: 0.0001  # ⭐ 迁移学习使用更小的学习率（预训练的1/3）
+  wd: 1.0e-04
+  gradient_clip_val: 1.0
+  max_epochs: 200  # ⭐ 迁移学习可能需要更多轮次
+  # scheduler
+  lr_scheduler_mode: "cosine"
+  min_lr_ratio: 1.0e-3
+  warmup_min_lr_ratio: 0.0
+  warmup_percentage: 0.1  # ⭐ 更短的warmup（10%）
+  # early stopping
+  early_stop: true
+  early_stop_mode: "min"
+  early_stop_patience: 30  # ⭐ 更有耐心
+  save_top_k: 3
+
+logging:
+  logging_prefix: "Transfer_Learning_Argo"
+  monitor_lr: true
+  monitor_device: false
+  track_grad_norm: -1
+  use_wandb: false
+
+trainer:
+  check_val_every_n_epoch: 1
+  log_step_ratio: 0.001
+  precision: 16
+
+vis:
+  train_example_data_idx_list: [0, ]
+  val_example_data_idx_list: [0, ]
+  test_example_data_idx_list: [0, ]
+  eval_example_only: true
+
+model:
+  input_shape: [14, 45, 60, 6]
+  target_shape: [14, 45, 60, 20]
+  base_units: 64
+  scale_alpha: 1.0
+
+  enc_depth: [2, 2]
+  dec_depth: [2, 2]
+  enc_use_inter_ffn: true
+  dec_use_inter_ffn: true
+  dec_hierarchical_pos_embed: false
+
+  downsample: 2
+  downsample_type: "patch_merge"
+  upsample_type: "upsample"
+
+  num_global_vectors: 0
+  use_dec_self_global: false
+  dec_self_update_global: true
+  use_dec_cross_global: false
+  use_global_vector_ffn: false
+  use_global_self_attn: false
+  separate_global_qkv: false
+  global_dim_ratio: 1
+
+  self_pattern: "axial"
+  cross_self_pattern: "axial"
+  cross_pattern: "cross_1x1"
+  dec_cross_last_n_frames: null
+
+  attn_drop: 0.1  # ⭐ 迁移学习降低dropout
+  proj_drop: 0.1
+  ffn_drop: 0.1
+  num_heads: 4
+
+  ffn_activation: "gelu"
+  gated_ffn: false
+  norm_layer: "layer_norm"
+  padding_type: "zeros"
+  pos_embed_type: "t+hw"
+  use_relative_pos: true
+  self_attn_use_final_proj: true
+  dec_use_first_self_attn: false
+
+  z_init_method: "zeros"
+  initial_downsample_type: "conv"
+  initial_downsample_activation: "leaky"
+  initial_downsample_scale: 2
+  initial_downsample_conv_layers: 2
+  final_upsample_conv_layers: 1
+  checkpoint_level: 0
+
+  # 残差模块配置（与预训练保持一致）
+  use_residual_blocks: true
+  residual_block_num: 2
+  residual_block_type: "improved"
+  residual_block_position: "both"
+  residual_use_3d: false
+
+  attn_linear_init_mode: "0"
+  ffn_linear_init_mode: "0"
+  conv_init_mode: "0"
+  down_up_linear_init_mode: "0"
+  norm_init_mode: "0"

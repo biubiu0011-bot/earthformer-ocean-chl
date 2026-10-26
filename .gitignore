@@ -1,0 +1,38 @@
+# Python and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+.env.*
+
+# Data, model weights, and generated experiments
+data/*
+!data/README.md
+results/*
+!results/README.md
+checkpoints/
+experiments/
+lightning_logs/
+runs/
+*.ckpt
+*.pth
+*.pt
+*.npy
+*.nc
+*.h5
+*.hdf5
+*.log
+events.out.tfevents.*
+
+# Jupyter transient files and legacy research notebooks
+**/.ipynb_checkpoints/
+notebooks/**/*.ipynb
+
+# Editor and system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+

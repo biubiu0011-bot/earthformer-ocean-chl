@@ -1,0 +1,28 @@
+name: earthformer-ocean-chl
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pip
+  - numpy
+  - pandas
+  - xarray
+  - netcdf4
+  - matplotlib
+  - scikit-learn
+  - tqdm
+  - pytorch=1.13.*
+  - torchvision=0.14.*
+  - pytorch-cuda=11.7
+  - pip:
+      - pytorch-lightning==1.6.4
+      - torchmetrics
+      - omegaconf
+      - einops
+      - opencv-python
+      - earthnet==0.3.9
+      - pytest
+# Apex must be compiled separately against the active PyTorch/CUDA version.
+
